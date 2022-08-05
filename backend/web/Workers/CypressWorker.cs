@@ -15,7 +15,7 @@ public class CypressWorker : BackgroundService
     {
         _serviceProvider = serviceProvider;
     }
-    
+
     public const string VideosPath = "./videos/";
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -32,7 +32,7 @@ public class CypressWorker : BackgroundService
                 await Task.Delay(1000, stoppingToken);
                 continue;
             }
-            
+
             run.State = State.Running;
             run.RunDateTime = DateTime.UtcNow;
             await splashContext.SaveChangesAsync(stoppingToken);
@@ -51,10 +51,11 @@ public class CypressWorker : BackgroundService
                     WorkingDirectory = basePath
                 };
                 using var pNpmRunDist = Process.Start(psiNpmRunDist);
-                await pNpmRunDist!.StandardInput.WriteLineAsync("npx cypress run .");
+                await pNpmRunDist!.StandardInput.WriteLineAsync("npx cypress run . || exit $?");
                 await pNpmRunDist.WaitForExitAsync(stoppingToken);
 
-                run.State = State.Succeeded;
+                run.State = pNpmRunDist.ExitCode != 0 ? State.Failed : State.Succeeded;
+                
                 await splashContext.SaveChangesAsync(cancellationToken);
             }
             catch (Exception)
@@ -62,10 +63,10 @@ public class CypressWorker : BackgroundService
                 run.State = State.Failed;
                 await splashContext.SaveChangesAsync(stoppingToken);
             }
-            
+
             const string videoPath = basePath + "/cypress/videos/test.cy.js.mp4";
             File.Move(videoPath, VideosPath + run.Id + ".mp4");
-            
+
             await Task.Delay(1000, stoppingToken);
         }
     }
