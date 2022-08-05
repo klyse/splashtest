@@ -5,7 +5,8 @@ services:
     ports:
       - 5001:5001
     environment:
-      - ConnectionStrings__CloudXRManagement=Server=db;Database=cloudxr_management;User Id=postgres;
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__db=Server=db;Database=splashdb;User Id=postgres;
       - Urls=http://+:5001
     depends_on:
       - db
