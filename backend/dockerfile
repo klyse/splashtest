@@ -4,12 +4,19 @@ WORKDIR /app
 COPY . ./
 RUN dotnet publish web -c Release -o out
 
-RUN apt update && apt nodejs npm
-
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
+FROM cypress/included:9.4.1
+WORKDIR /app/cypress
+COPY ./cypress /app/cypress
+
 WORKDIR /app
 COPY --from=build-env /app/out .
+
+RUN wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb && \
+    dpkg -i packages-microsoft-prod.deb && \
+    rm packages-microsoft-prod.deb && \
+    apt update && \
+    apt install -y aspnetcore-runtime-6.0
 
 EXPOSE 5001
 ENV ASPNETCORE_URLS=http://+:5001
