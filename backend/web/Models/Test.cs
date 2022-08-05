@@ -1,17 +1,23 @@
 namespace web.Models;
 
-public enum State
-{
-    Pending,
-    Running,
-    Failed,
-    Succeeded
-}
-
 public class Test
 {
     public Guid Id { get; set; }
-    public State State { get; set; }
-    public string Result { get; set; }
-    public string TestCode { get; set; }
+    public string Name { get; set; } = null!;
+    public ICollection<TestStep>? TestSteps { get; set; }
+
+    public ICollection<Run> Runs { get; }
+
+    public TestDto Project() => new()
+    {
+        Id = Id,
+        Name = Name,
+        TestCode = TestSteps
+    };
+
+    public Test()
+    {
+        TestSteps = new HashSet<TestStep>();
+        Runs = new HashSet<Run>();
+    }
 }

@@ -1,5 +1,7 @@
 # Splashtest
 
+Project page: https://hackathon.bz.it/project/splashtest
+
 # How to run
 
 Start docker compose:
