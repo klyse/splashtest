@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  api:
+    build: ./backend
+    ports:
+      - 5001:5001
+    environment:
+      - ConnectionStrings__CloudXRManagement=Server=db;Database=cloudxr_management;User Id=postgres;
+      - Urls=http://+:5001
+    depends_on:
+      - db
+    volumes:
+      - ./backend/web/appsettings.Development.json:/app/appsettings.Development.json
+
+  db:
+    image: postgres:14.4
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - 5432:5432
+
+volumes:
+  postgres_data:
