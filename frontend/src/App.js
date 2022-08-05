@@ -14,6 +14,7 @@ import {
   Image,
   Button,
   Flex,
+  Link,
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import logo from '../src/splash_test.png';
@@ -26,7 +27,9 @@ function App() {
         <Box textAlign="center" fontSize="xl">
           <Flex minWidth="max-content" alignItems="center" gap="2">
             <Box p="2">
-              <Image w={200} src={logo} alt="Dan Abramov" />
+              <Link as={NavLink} to="/">
+                <Image w={200} src={logo} alt="Dan Abramov" />
+              </Link>
             </Box>
             <Spacer />
             <ButtonGroup gap="2">

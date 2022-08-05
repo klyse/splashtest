@@ -10,12 +10,10 @@ const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
 
 root.render(
-  <StrictMode>
-    <BrowserRouter>
-      <ColorModeScript />
-      <App />
-    </BrowserRouter>
-  </StrictMode>
+  <BrowserRouter>
+    <ColorModeScript />
+    <App />
+  </BrowserRouter>
 );
 
 // If you want your app to work offline and load faster, you can change

@@ -90,7 +90,7 @@ function Create() {
   const [title, setTitle] = useState('');
   const [email, setEmail] = useState('');
   const [author, setAuthor] = useState('');
-  const [schedule, setSchedule] = useState('');
+  // const [schedule, setSchedule] = useState('');
   const [items, setItem] = useState([]);
   const save = async () => {
     try {
@@ -116,7 +116,7 @@ function Create() {
       setAuthor('');
       setEmail('');
       setInterval('');
-      setSchedule('');
+      // setSchedule('');
       setItem([]);
     } catch (e) {
       toast({
@@ -133,11 +133,41 @@ function Create() {
       <Box p={5} shadow="md" borderWidth="1px" width={400}>
         <Tabs>
           <TabList>
-            <Tab>Add new</Tab>
             <Tab>Settings</Tab>
+            <Tab>Add new</Tab>
           </TabList>
 
           <TabPanels>
+            {' '}
+            <TabPanel>
+              <VStack spacing={4}>
+                <FormControl>
+                  <FormLabel>Test name</FormLabel>
+                  <Input
+                    value={title}
+                    onChange={e => setTitle(e.target.value)}
+                    placeholder="Name"
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Author</FormLabel>
+                  <Input
+                    placeholder="Author"
+                    value={author}
+                    onChange={e => setAuthor(e.target.value)}
+                  />
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Send alert to</FormLabel>
+                  <Input
+                    placeholder="Email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                  />
+                </FormControl>
+              </VStack>
+            </TabPanel>
             <TabPanel>
               <VStack spacing={4}>
                 <Action
@@ -158,47 +188,6 @@ function Create() {
                   placeholder="Text"
                   setItem={setItem}
                 />
-              </VStack>
-            </TabPanel>
-            <TabPanel>
-              <VStack spacing={4}>
-                <FormControl>
-                  <FormLabel>Test name</FormLabel>
-                  <Input
-                    value={title}
-                    onChange={e => setTitle(e.target.value)}
-                    placeholder="Name"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Author</FormLabel>
-                  <Input
-                    placeholder="Author"
-                    value={author}
-                    onChange={e => setAuthor(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Schedule</FormLabel>
-                  <Select
-                    placeholder=""
-                    value={schedule}
-                    onChange={e => setSchedule(e.target.value)}
-                  >
-                    <option value=""></option>
-                    <option value="option1">every 30 min</option>
-                    <option value="option2">every 6 hours</option>
-                    <option value="option3">every day</option>
-                  </Select>
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Send alert to</FormLabel>
-                  <Input
-                    placeholder="Email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                  />
-                </FormControl>
               </VStack>
             </TabPanel>
           </TabPanels>

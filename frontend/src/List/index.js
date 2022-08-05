@@ -11,40 +11,87 @@ import {
   useDisclosure,
   Button,
 } from '@chakra-ui/react';
+import { Component } from 'react';
+import List from './List';
 
-function List() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+const temp = [
+  {
+    id: 123,
+    name: 'adasdasd',
+    runs: [
+      {
+        title: 'adasdasd',
+        date: 'asdadsa',
+        status: 'passed',
+      },
+    ],
+  },
+  {
+    id: 123,
+    name: 'adasdasd',
+    runs: [
+      {
+        title: 'adasdasd',
+        date: 'asdadsa',
+        status: 'failed',
+      },
+    ],
+  },
+  {
+    id: 123,
+    name: 'adasdasd',
+    runs: [
+      {
+        title: 'adasdasd',
+        date: 'asdadsa',
+        status: 'running',
+      },
+      {
+        title: 'adasdasd',
+        date: 'asdadsa',
+        status: 'running',
+      },
+    ],
+  },
+];
 
-  const handleClick = () => {
-    onOpen();
-  };
+class AllItems extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      items: [],
+    };
+  }
 
-  return (
-    <Flex spacing={8} direction="row" gap="8">
-      <Box p={5} bg="#fafafa" flexGrow="1" shadow="md" borderWidth="1px">
-        <Button onClick={() => handleClick()} m={4}>{`Open Drawer`}</Button>
-
-        <Drawer onClose={onClose} isOpen={isOpen} size="xl">
-          <DrawerOverlay />
-          <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader> drawer contents</DrawerHeader>
-            <DrawerBody>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Consequat nisl vel pretium lectus quam id. Semper quis lectus
-                nulla at volutpat diam ut venenatis. Dolor morbi non arcu risus
-                quis varius quam quisque. Massa ultricies mi quis hendrerit
-                dolor magna eget est lorem. Erat imperdiet sed euismod nisi
-                porta. Lectus vestibulum mattis ullamcorper velit.
-              </p>
-            </DrawerBody>
-          </DrawerContent>
-        </Drawer>
-      </Box>
-    </Flex>
-  );
+  componentDidMount() {
+    // console.log('prova');
+    fetch('http://localhost:5001/tests', {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(items => {
+        this.setState({
+          items: items,
+        });
+      })
+      .catch(error => console.log(error));
+  }
+  render() {
+    // console.log(temp);
+    return (
+      <Flex spacing={8} direction="row" gap="8">
+        <Box p={5} bg="#fafafa" flexGrow="1" shadow="md" borderWidth="1px">
+          {/* {this.state.items.length > 1 ? ( */}
+          <List items={temp} />
+          {/* ) : (
+            'Add new test'
+          )} */}
+        </Box>
+      </Flex>
+    );
+  }
 }
-
-export default List;
+export default AllItems;
