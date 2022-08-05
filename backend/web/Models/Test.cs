@@ -8,13 +8,6 @@ public class Test
 
     public ICollection<Run> Runs { get; }
 
-    public TestDto Project() => new()
-    {
-        Id = Id,
-        Name = Name,
-        TestCode = TestSteps
-    };
-
     public Test()
     {
         TestSteps = new HashSet<TestStep>();
