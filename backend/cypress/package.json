@@ -1,0 +1,9 @@
+{
+  "name": "test-handler",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "cypress": "^10.4.0"
+  }
+}

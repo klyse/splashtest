@@ -1,4 +1,4 @@
-Web/appsettings.[Ll]ocal.json
+Web/appsettings.[Dd]evelopment.json
 *.env
 .envrc
 .git
@@ -6,9 +6,15 @@ Web/appsettings.[Ll]ocal.json
 .gitignore
 .vs
 .vscode
-docker-compose.yml
-docker-compose.*.yml
 */bin
 */obj
 obj
 .idea
+/cypress/node_modules/
+Dockerfile
+docker-compose*.yml
+README.md
+.dockerignore
+dist/
+.git/
+.github/

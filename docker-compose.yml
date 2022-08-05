@@ -1,6 +1,7 @@
 version: "3.8"
 services:
   api:
+    platform: linux/amd64
     build: ./backend
     ports:
       - 5001:5001
@@ -12,6 +13,9 @@ services:
       - db
     volumes:
       - ./backend/web/appsettings.Development.json:/app/appsettings.Development.json
+    entrypoint:
+    - dotnet
+    - web.dll
 
   db:
     image: postgres:14.4

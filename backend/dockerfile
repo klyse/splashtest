@@ -5,11 +5,24 @@ COPY . ./
 RUN dotnet publish web -c Release -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
+FROM cypress/included:9.4.1
+WORKDIR /app/cypress
+COPY ./cypress /app/cypress
+
+RUN npm install
+
 WORKDIR /app
 COPY --from=build-env /app/out .
 
+RUN wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb && \
+    dpkg -i packages-microsoft-prod.deb && \
+    rm packages-microsoft-prod.deb && \
+    apt update && \
+    apt install -y aspnetcore-runtime-6.0
+
 EXPOSE 5001
 ENV ASPNETCORE_URLS=http://+:5001
+# workaround for dotnet with cypress base image on m1 https://github.com/dotnet/aspnetcore/issues/38876#issuecomment-993949141
+ENV ASPNETCORE_hostBuilder__reloadConfigOnChange=false
 
 ENTRYPOINT ["dotnet", "web.dll"]
