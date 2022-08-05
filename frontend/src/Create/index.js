@@ -8,7 +8,14 @@ import {
   Text,
   Button,
   VStack,
-  StackDivider,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  FormControl,
+  Select,
+  FormLabel,
 } from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
 import { useState } from 'react';
@@ -80,7 +87,10 @@ function Step({ item }) {
 
 function Create() {
   const toast = useToast();
-  const [title, setTitle] = useState('Test');
+  const [title, setTitle] = useState('');
+  const [email, setEmail] = useState('');
+  const [author, setAuthor] = useState('');
+  const [schedule, setSchedule] = useState('');
   const [items, setItem] = useState([]);
   const save = async () => {
     try {
@@ -103,6 +113,10 @@ function Create() {
         isClosable: true,
       });
       setTitle('');
+      setAuthor('');
+      setEmail('');
+      setInterval('');
+      setSchedule('');
       setItem([]);
     } catch (e) {
       toast({
@@ -116,35 +130,87 @@ function Create() {
   };
   return (
     <Flex spacing={8} direction="row" gap="8">
-      <Box p={5} shadow="md" borderWidth="1px">
-        <VStack spacing={4}>
-          <Action
-            type="visit"
-            title="Visit"
-            placeholder="Url"
-            setItem={setItem}
-          />
-          <Action
-            type="click"
-            title="Click"
-            placeholder="Label"
-            setItem={setItem}
-          />
-          <Action
-            type="contains"
-            title="Contains"
-            placeholder="Text"
-            setItem={setItem}
-          />
-          <Button
-            colorScheme="blue"
-            disabled={items.length === 0}
-            onClick={save}
-            w="100%"
-          >
-            Save
-          </Button>
-        </VStack>
+      <Box p={5} shadow="md" borderWidth="1px" width={400}>
+        <Tabs>
+          <TabList>
+            <Tab>Add new</Tab>
+            <Tab>Settings</Tab>
+          </TabList>
+
+          <TabPanels>
+            <TabPanel>
+              <VStack spacing={4}>
+                <Action
+                  type="visit"
+                  title="Visit"
+                  placeholder="Url"
+                  setItem={setItem}
+                />
+                <Action
+                  type="click"
+                  title="Click"
+                  placeholder="Label"
+                  setItem={setItem}
+                />
+                <Action
+                  type="contains"
+                  title="Contains"
+                  placeholder="Text"
+                  setItem={setItem}
+                />
+              </VStack>
+            </TabPanel>
+            <TabPanel>
+              <VStack spacing={4}>
+                <FormControl>
+                  <FormLabel>Test name</FormLabel>
+                  <Input
+                    value={title}
+                    onChange={e => setTitle(e.target.value)}
+                    placeholder="Name"
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Author</FormLabel>
+                  <Input
+                    placeholder="Author"
+                    value={author}
+                    onChange={e => setAuthor(e.target.value)}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Schedule</FormLabel>
+                  <Select
+                    placeholder=""
+                    value={schedule}
+                    onChange={e => setSchedule(e.target.value)}
+                  >
+                    <option value=""></option>
+                    <option value="option1">every 30 min</option>
+                    <option value="option2">every 6 hours</option>
+                    <option value="option3">every day</option>
+                  </Select>
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Send alert to</FormLabel>
+                  <Input
+                    placeholder="Email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                  />
+                </FormControl>
+              </VStack>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+        <Button
+          colorScheme="blue"
+          disabled={items.length === 0}
+          onClick={save}
+          w="100%"
+        >
+          Save
+        </Button>
       </Box>
       <Box p={5} bg="#fafafa" flexGrow="1" shadow="md" borderWidth="1px">
         {items.length === 0 && (
