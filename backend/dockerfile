@@ -4,6 +4,8 @@ WORKDIR /app
 COPY . ./
 RUN dotnet publish web -c Release -o out
 
+RUN apt update && apt nodejs npm
+
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
