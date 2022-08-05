@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using web.Db;
@@ -13,9 +14,10 @@ using web.Models;
 namespace web.Migrations
 {
     [DbContext(typeof(SplashContext))]
-    partial class SplashContextModelSnapshot : ModelSnapshot
+    [Migration("20220805210947_AddRunDateTime")]
+    partial class AddRunDateTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
