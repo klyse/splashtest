@@ -22,6 +22,16 @@ describe('empty spec', () => {
     cy.visit('{testStep.Value}')
 ");
                     break;
+                case TestStepTypes.Click:
+                    fileContent.Append(@$"
+    cy.contains('{testStep.Value}').click()
+");
+                    break;
+                case TestStepTypes.Contains:
+                    fileContent.Append(@$"
+    cy.contains('{testStep.Value}')
+");
+                    break;
             }
         }
 
