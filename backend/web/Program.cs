@@ -9,6 +9,11 @@ var connectionString = builder.Configuration.GetConnectionString("db");
 
 builder.Services
     .Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(c => c.SerializerOptions.Converters.Add(new JsonStringEnumConverter()))
+    .AddCors(c => c.AddDefaultPolicy(p => p
+        .AllowAnyHeader()
+        .AllowAnyOrigin()
+        .AllowCredentials()
+        .AllowAnyMethod()))
     .AddEndpointsApiExplorer()
     .AddSwaggerGen()
     .AddDbContext<SplashContext>(config => { config.UseNpgsql(connectionString); });
@@ -25,6 +30,8 @@ app.MapPost("/tests", async (TestDao n, SplashContext db) =>
 });
 
 app.MapGet("/runs", () => { });
+
+app.UseCors();
 
 app.UseSwagger();
 app.UseSwaggerUI();
