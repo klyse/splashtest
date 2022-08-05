@@ -17,6 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import logo from '../src/splash_test.png';
+import Home from './Home';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           </Flex>
           <Box p={5}>
             <Routes>
+              <Route path="/" element={<Home />} />
               <Route path="create" element={<Create />} />
               <Route path="list" element={<List />} />
             </Routes>
