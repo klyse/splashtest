@@ -107,6 +107,7 @@ public class CypressWorker : BackgroundService
             foreach (var file in Directory.GetFiles(screenshotsBasePath))
             {
                 File.Move(file, runDirectory + "photo.png");
+                break;
             }
 
             await Task.Delay(1000, stoppingToken);
