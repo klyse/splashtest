@@ -20,5 +20,7 @@ RUN wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-p
 
 EXPOSE 5001
 ENV ASPNETCORE_URLS=http://+:5001
+# workaround for dotnet with cypress base image on m1 https://github.com/dotnet/aspnetcore/issues/38876#issuecomment-993949141
+ENV ASPNETCORE_hostBuilder__reloadConfigOnChange=false
 
 ENTRYPOINT ["dotnet", "web.dll"]
