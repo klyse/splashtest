@@ -10,7 +10,9 @@ import {
   VStack,
   StackDivider,
 } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import { useState } from 'react';
+import Empty from './Empty';
 
 function Arrow() {
   return (
@@ -50,7 +52,9 @@ function Action({ title, type, placeholder, setItem }) {
       </Center>
       <Spacer />
       <Center w="100px">
-        <Button onClick={submit}>+</Button>
+        <Button onClick={submit} disabled={!val}>
+          +
+        </Button>
       </Center>
     </Flex>
   );
@@ -75,7 +79,41 @@ function Step({ item }) {
 }
 
 function Create() {
+  const toast = useToast();
+  const [title, setTitle] = useState('Test');
   const [items, setItem] = useState([]);
+  const save = async () => {
+    try {
+      const response = await fetch('http://localhost:5001/tests', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          name: title,
+          testSteps: items,
+        }),
+      });
+      toast({
+        title: 'Test created.',
+        description: `We've created the test name "${title}".`,
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      });
+      setTitle('');
+      setItem([]);
+    } catch (e) {
+      toast({
+        title: 'Error.',
+        description: `Cannot create test named "${title}".`,
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  };
   return (
     <Flex spacing={8} direction="row" gap="8">
       <Box p={5} shadow="md" borderWidth="1px">
@@ -98,10 +136,24 @@ function Create() {
             placeholder="Text"
             setItem={setItem}
           />
+          <Button
+            colorScheme="blue"
+            disabled={items.length === 0}
+            onClick={save}
+            w="100%"
+          >
+            Save
+          </Button>
         </VStack>
       </Box>
       <Box p={5} bg="#fafafa" flexGrow="1" shadow="md" borderWidth="1px">
-        {items.length === 0 && <Text>Create your test</Text>}
+        {items.length === 0 && (
+          <Center>
+            <Box maxWidth={400}>
+              <Empty />
+            </Box>
+          </Center>
+        )}
         <VStack divider={<Arrow />} spacing={4} align="center">
           {items.map(item => (
             <Step item={item} />
