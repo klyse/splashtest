@@ -49,7 +49,22 @@ const temp = [
       {
         title: 'adasdasd',
         date: 'asdadsa',
-        status: 'running',
+        status: 'passed',
+      },
+      {
+        title: 'adasdasd',
+        date: 'asdadsa',
+        status: 'failed',
+      },
+      {
+        title: 'adasdasd',
+        date: 'asdadsa',
+        status: 'failed',
+      },
+      {
+        title: 'adasdasd',
+        date: 'asdadsa',
+        status: 'failed',
       },
     ],
   },

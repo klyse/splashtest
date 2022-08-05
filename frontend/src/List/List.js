@@ -7,9 +7,12 @@ import {
   DrawerCloseButton,
   useDisclosure,
   Button,
-  List,
-  ListIcon,
-  ListItem,
+  Accordion,
+  Badge,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
   TableContainer,
   Table,
   Thead,
@@ -20,6 +23,7 @@ import {
   FormControl,
   FormLabel,
   Select,
+  Box,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
@@ -40,11 +44,36 @@ function MoreInfo(props) {
           <DrawerCloseButton />
           <DrawerHeader>{props.item.name} - List of runs</DrawerHeader>
           <DrawerBody>
-            <List spacing={3}>
+            <Accordion>
               {props.item.runs.map(run => (
-                <ListItem>{run.date}</ListItem>
+                <AccordionItem>
+                  <AccordionButton>
+                    <Box flex="1" textAlign="left">
+                      <Badge
+                        mr={4}
+                        colorScheme={
+                          run.status === 'passed'
+                            ? 'green'
+                            : run.status === 'failed'
+                            ? 'red'
+                            : 'yellow'
+                        }
+                      >
+                        {run.status}
+                      </Badge>
+                      {run.date}
+                    </Box>
+                    <AccordionIcon />
+                  </AccordionButton>
+                  <AccordionPanel pb={4}>
+                    <video
+                      controls
+                      src="http://localhost:5001/run/08f81165-73c2-42e2-9cd0-c2272eebcb34/video"
+                    ></video>
+                  </AccordionPanel>
+                </AccordionItem>
               ))}
-            </List>
+            </Accordion>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -60,8 +89,8 @@ function MyList(props) {
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th>Nome</Th>
-            <Th>Run</Th>
+            <Th>Test</Th>
+            <Th></Th>
             <Th>Schedule</Th>
             <Th></Th>
           </Tr>
