@@ -63,11 +63,19 @@ app.MapGet("/run/{runId:Guid}", async (Guid runId, SplashContext db) =>
 
 app.MapGet("/run/{runId:Guid}/video", async (Guid runId) =>
 {
-    var fileName = CypressWorker.MediaPath + runId + ".mp4";
+    var fileName = CypressWorker.MediaPath + runId + "/video.mp4";
     var filestream = File.OpenRead(fileName);
 
     return Results.File(filestream, contentType: "video/mp4",
         fileDownloadName: fileName, enableRangeProcessing: true);
+});
+
+app.MapGet("/run/{runId:Guid}/photo", async (Guid runId) =>
+{
+    var fileName = CypressWorker.MediaPath + runId + "/photo.png";
+    var image = System.IO.File.OpenRead(fileName);
+    return Results.File(image, "image/png");
+
 });
 
 app.UseCors();

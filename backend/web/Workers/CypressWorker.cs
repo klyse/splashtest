@@ -104,7 +104,10 @@ public class CypressWorker : BackgroundService
             ClearDir(runDirectory);
             File.Move(videoPath, runDirectory + "video.mp4");
 
-            foreach (var file in Directory.GetFiles(screenshotsBasePath)) File.Move(file, runDirectory + Path.GetFileName(file));
+            foreach (var file in Directory.GetFiles(screenshotsBasePath))
+            {
+                File.Move(file, runDirectory + "photo.png");
+            }
 
             await Task.Delay(1000, stoppingToken);
         }
