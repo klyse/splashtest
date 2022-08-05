@@ -64,9 +64,19 @@ app.MapPost("/run/{testId:Guid}", async (Guid testId, SplashContext db) =>
         File.Move(videoPath, videosPath + run.Id + ".mp4");
     });
     thread.Start();
+
+    return run.Id;
 });
 
-app.MapGet("/runs", () => { });
+app.MapGet("/run/{runId:Guid}", async (Guid runId)  =>
+{
+    var fileName = videosPath + runId + ".mp4";
+    var filestream = File.OpenRead(fileName);
+
+    return Results.File(filestream, contentType: "video/mp4", 
+        fileDownloadName: fileName, enableRangeProcessing: true); 
+
+});
 
 app.UseCors();
 
