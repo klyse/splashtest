@@ -10,8 +10,8 @@ var connectionString = builder.Configuration.GetConnectionString("db");
 builder.Services
     .Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(c => c.SerializerOptions.Converters.Add(new JsonStringEnumConverter()))
     .AddCors(c => c.AddDefaultPolicy(p => p
+        .WithOrigins("http://localhost:3000")
         .AllowAnyHeader()
-        .AllowAnyOrigin()
         .AllowCredentials()
         .AllowAnyMethod()))
     .AddEndpointsApiExplorer()
