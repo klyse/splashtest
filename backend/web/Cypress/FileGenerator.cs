@@ -17,7 +17,7 @@ describe('empty spec', () => {
         {
             switch (testStep.Type)
             {
-                case TestStepTypes.NavigateTo:
+                case TestStepTypes.Visit:
                     fileContent.Append(@$"
     cy.visit('{testStep.Value}')
 ");

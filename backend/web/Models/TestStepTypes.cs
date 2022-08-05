@@ -2,7 +2,7 @@ namespace web.Models;
 
 public enum TestStepTypes
 {
-    NavigateTo,
+    Visit,
     Contains,
     Click
 }
