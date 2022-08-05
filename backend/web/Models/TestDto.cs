@@ -1,6 +1,5 @@
 namespace web.Models;
 
-
 public class TestDto
 {
     public Guid Id { get; set; }

@@ -1,38 +1,36 @@
-﻿using System.Collections.Generic;
+﻿#nullable disable
+
 using Microsoft.EntityFrameworkCore.Migrations;
 using web.Models;
 
-#nullable disable
+namespace web.Migrations;
 
-namespace web.Migrations
+public partial class AddTestSteps : Migration
 {
-    public partial class AddTestSteps : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "TestCode",
-                table: "Tests");
+        migrationBuilder.DropColumn(
+            "TestCode",
+            "Tests");
 
-            migrationBuilder.AddColumn<ICollection<TestStep>>(
-                name: "TestSteps",
-                table: "Tests",
-                type: "jsonb",
-                nullable: false);
-        }
+        migrationBuilder.AddColumn<ICollection<TestStep>>(
+            "TestSteps",
+            "Tests",
+            "jsonb",
+            nullable: false);
+    }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "TestSteps",
-                table: "Tests");
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropColumn(
+            "TestSteps",
+            "Tests");
 
-            migrationBuilder.AddColumn<string>(
-                name: "TestCode",
-                table: "Tests",
-                type: "text",
-                nullable: false,
-                defaultValue: "");
-        }
+        migrationBuilder.AddColumn<string>(
+            "TestCode",
+            "Tests",
+            "text",
+            nullable: false,
+            defaultValue: "");
     }
 }

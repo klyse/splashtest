@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,11 +5,7 @@ using web.Db;
 using web.Models;
 using web.Workers;
 
-
-if (!Directory.Exists(CypressWorker.MediaPath))
-{
-    Directory.CreateDirectory(CypressWorker.MediaPath);
-}
+if (!Directory.Exists(CypressWorker.MediaPath)) Directory.CreateDirectory(CypressWorker.MediaPath);
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,14 +45,14 @@ app.MapPost("/test/{testId:Guid}/run", async (Guid testId, SplashContext db) =>
     };
     test.Runs.Add(run);
     await db.SaveChangesAsync();
-    
+
     return run.Project();
 });
 
 app.MapGet("/run/{runId:Guid}", async (Guid runId, SplashContext db) =>
 {
     var run = await db.Runs.SingleAsync(c => c.Id == runId);
-   
+
     return run.Project();
 });
 
@@ -66,16 +61,15 @@ app.MapGet("/run/{runId:Guid}/video", async (Guid runId) =>
     var fileName = CypressWorker.MediaPath + runId + "/video.mp4";
     var filestream = File.OpenRead(fileName);
 
-    return Results.File(filestream, contentType: "video/mp4",
-        fileDownloadName: fileName, enableRangeProcessing: true);
+    return Results.File(filestream, "video/mp4",
+        fileName, enableRangeProcessing: true);
 });
 
 app.MapGet("/run/{runId:Guid}/photo", async (Guid runId) =>
 {
     var fileName = CypressWorker.MediaPath + runId + "/photo.png";
-    var image = System.IO.File.OpenRead(fileName);
+    var image = File.OpenRead(fileName);
     return Results.File(image, "image/png");
-
 });
 
 app.UseCors();

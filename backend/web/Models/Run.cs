@@ -8,10 +8,13 @@ public class Run
     public Guid TestId { get; set; }
     public Test Test { get; set; }
 
-    public RunDto Project() => new RunDto
+    public RunDto Project()
     {
-        Id = Id,
-        State = State,
-        RunDateTime = RunDateTime
-    };
+        return new()
+        {
+            Id = Id,
+            State = State,
+            RunDateTime = RunDateTime
+        };
+    }
 }

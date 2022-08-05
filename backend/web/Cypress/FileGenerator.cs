@@ -14,7 +14,6 @@ describe('empty spec', () => {
 ");
 
         foreach (var testStep in testSteps)
-        {
             switch (testStep.Type)
             {
                 case TestStepTypes.Visit:
@@ -33,7 +32,6 @@ describe('empty spec', () => {
 ");
                     break;
             }
-        }
 
         fileContent.Append(@"
   })

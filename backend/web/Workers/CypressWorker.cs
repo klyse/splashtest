@@ -1,5 +1,3 @@
-using System.Collections.Concurrent;
-using System.ComponentModel;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using web.Cypress;
@@ -10,6 +8,7 @@ namespace web.Workers;
 
 public class CypressWorker : BackgroundService
 {
+    public const string MediaPath = "./media/";
     private readonly ILogger<CypressWorker> _logger;
     private readonly IServiceProvider _serviceProvider;
 
@@ -18,8 +17,6 @@ public class CypressWorker : BackgroundService
         _logger = logger;
         _serviceProvider = serviceProvider;
     }
-
-    public const string MediaPath = "./media/";
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -35,10 +32,7 @@ public class CypressWorker : BackgroundService
 
     private void ClearDir(string path)
     {
-        if (Directory.Exists(path))
-        {
-            Directory.Delete(path, true);
-        }
+        if (Directory.Exists(path)) Directory.Delete(path, true);
 
         Directory.CreateDirectory(path);
     }

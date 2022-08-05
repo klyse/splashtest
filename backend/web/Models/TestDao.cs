@@ -5,9 +5,12 @@ public class TestDao
     public string Name { get; set; }
     public ICollection<TestStep>? TestSteps { get; set; }
 
-    public Test Project() => new()
+    public Test Project()
     {
-        Name = Name,
-        TestSteps = TestSteps
-    };
+        return new()
+        {
+            Name = Name,
+            TestSteps = TestSteps
+        };
+    }
 }

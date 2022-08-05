@@ -1,34 +1,32 @@
-﻿using System.Collections.Generic;
+﻿#nullable disable
+
 using Microsoft.EntityFrameworkCore.Migrations;
 using web.Models;
 
-#nullable disable
+namespace web.Migrations;
 
-namespace web.Migrations
+public partial class TestStepsIsNullable : Migration
 {
-    public partial class TestStepsIsNullable : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AlterColumn<ICollection<TestStep>>(
-                name: "TestSteps",
-                table: "Tests",
-                type: "jsonb",
-                nullable: true,
-                oldClrType: typeof(ICollection<TestStep>),
-                oldType: "jsonb");
-        }
+        migrationBuilder.AlterColumn<ICollection<TestStep>>(
+            "TestSteps",
+            "Tests",
+            "jsonb",
+            nullable: true,
+            oldClrType: typeof(ICollection<TestStep>),
+            oldType: "jsonb");
+    }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AlterColumn<ICollection<TestStep>>(
-                name: "TestSteps",
-                table: "Tests",
-                type: "jsonb",
-                nullable: false,
-                oldClrType: typeof(ICollection<TestStep>),
-                oldType: "jsonb",
-                oldNullable: true);
-        }
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.AlterColumn<ICollection<TestStep>>(
+            "TestSteps",
+            "Tests",
+            "jsonb",
+            nullable: false,
+            oldClrType: typeof(ICollection<TestStep>),
+            oldType: "jsonb",
+            oldNullable: true);
     }
 }
