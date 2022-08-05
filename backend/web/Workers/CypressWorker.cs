@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using web.Cypress;
 using web.Db;
 using web.Models;
 
@@ -9,23 +10,49 @@ namespace web.Workers;
 
 public class CypressWorker : BackgroundService
 {
+    private readonly ILogger<CypressWorker> _logger;
     private readonly IServiceProvider _serviceProvider;
 
-    public CypressWorker(IServiceProvider serviceProvider)
+    public CypressWorker(ILogger<CypressWorker> logger, IServiceProvider serviceProvider)
     {
+        _logger = logger;
         _serviceProvider = serviceProvider;
     }
 
-    public const string VideosPath = "./videos/";
+    public const string MediaPath = "./media/";
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        try
+        {
+            await CycleAsync(stoppingToken);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "CypressWorker error");
+        }
+    }
+
+    private void ClearDir(string path)
+    {
+        if (Directory.Exists(path))
+        {
+            Directory.Delete(path, true);
+        }
+
+        Directory.CreateDirectory(path);
+    }
+
+    private async Task CycleAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
         {
             var scope = _serviceProvider.CreateScope();
             var splashContext = scope.ServiceProvider.GetRequiredService<SplashContext>();
 
-            var run = await splashContext.Runs.FirstOrDefaultAsync(c => c.State == State.Pending, stoppingToken);
+            var run = await splashContext.Runs
+                .Include(c => c.Test)
+                .FirstOrDefaultAsync(c => c.State == State.Pending, stoppingToken);
 
             if (run is null)
             {
@@ -38,6 +65,15 @@ public class CypressWorker : BackgroundService
             await splashContext.SaveChangesAsync(stoppingToken);
 
             const string basePath = "../cypress";
+            const string videoPath = basePath + "/cypress/videos/test.cy.js.mp4";
+            const string screenshotsBasePath = basePath + "/cypress/screenshots/test.cy.js";
+
+            ClearDir(basePath + "/cypress/videos");
+            ClearDir(basePath + "/cypress/screenshots");
+            ClearDir(basePath + "/cypress/e2e");
+
+            var fileContent = new FileGenerator().GetFileContent(run.Test.TestSteps!);
+            await File.WriteAllTextAsync(basePath + "/cypress/e2e/" + "test.cy.js", fileContent, stoppingToken);
 
             try
             {
@@ -55,7 +91,7 @@ public class CypressWorker : BackgroundService
                 await pNpmRunDist.WaitForExitAsync(stoppingToken);
 
                 run.State = pNpmRunDist.ExitCode != 0 ? State.Failed : State.Succeeded;
-                
+
                 await splashContext.SaveChangesAsync(cancellationToken);
             }
             catch (Exception)
@@ -64,8 +100,11 @@ public class CypressWorker : BackgroundService
                 await splashContext.SaveChangesAsync(stoppingToken);
             }
 
-            const string videoPath = basePath + "/cypress/videos/test.cy.js.mp4";
-            File.Move(videoPath, VideosPath + run.Id + ".mp4");
+            var runDirectory = MediaPath + run.Id + "/";
+            ClearDir(runDirectory);
+            File.Move(videoPath, runDirectory + "video.mp4");
+
+            foreach (var file in Directory.GetFiles(screenshotsBasePath)) File.Move(file, runDirectory + Path.GetFileName(file));
 
             await Task.Delay(1000, stoppingToken);
         }

@@ -7,9 +7,9 @@ using web.Models;
 using web.Workers;
 
 
-if (!Directory.Exists(CypressWorker.VideosPath))
+if (!Directory.Exists(CypressWorker.MediaPath))
 {
-    Directory.CreateDirectory(CypressWorker.VideosPath);
+    Directory.CreateDirectory(CypressWorker.MediaPath);
 }
 
 var builder = WebApplication.CreateBuilder(args);
@@ -63,7 +63,7 @@ app.MapGet("/run/{runId:Guid}", async (Guid runId, SplashContext db) =>
 
 app.MapGet("/run/{runId:Guid}/video", async (Guid runId) =>
 {
-    var fileName = CypressWorker.VideosPath + runId + ".mp4";
+    var fileName = CypressWorker.MediaPath + runId + ".mp4";
     var filestream = File.OpenRead(fileName);
 
     return Results.File(filestream, contentType: "video/mp4",
