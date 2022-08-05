@@ -214,7 +214,10 @@ function Create() {
       </Box>
       <Box p={5} bg="#fafafa" flexGrow="1" shadow="md" borderWidth="1px">
         {items.length === 0 && (
-          <Center>
+          <Center flexDirection="column">
+            <Text>
+              Just a few clicks to create, customize, run and save your test.
+            </Text>
             <Box maxWidth={400}>
               <Empty />
             </Box>

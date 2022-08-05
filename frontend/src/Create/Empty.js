@@ -3,7 +3,7 @@ function Empty() {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="596.91213"
-      height="505.57464"
+      height="405.57464"
       viewBox="0 0 596.91213 505.57464"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       style={{ width: '100%' }}
