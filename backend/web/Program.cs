@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using web.Db;
 using web.Models;
+using web.Workers;
 
-const string videosPath = "./videos/";
 
-if (!Directory.Exists(videosPath))
+if (!Directory.Exists(CypressWorker.VideosPath))
 {
-    Directory.CreateDirectory(videosPath);
+    Directory.CreateDirectory(CypressWorker.VideosPath);
 }
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,7 +26,8 @@ builder.Services
         .AllowAnyMethod()))
     .AddEndpointsApiExplorer()
     .AddSwaggerGen()
-    .AddDbContext<SplashContext>(config => { config.UseNpgsql(connectionString); });
+    .AddDbContext<SplashContext>(config => { config.UseNpgsql(connectionString); })
+    .AddHostedService<CypressWorker>();
 
 var app = builder.Build();
 
@@ -39,52 +40,34 @@ app.MapPost("/tests", async (TestDao n, SplashContext db) =>
     return dbObj.Entity.Project();
 });
 
-app.MapPost("/run/{testId:Guid}", async (Guid testId, SplashContext db, IServiceProvider provider) =>
+app.MapPost("/test/{testId:Guid}/run", async (Guid testId, SplashContext db) =>
 {
     var test = await db.Tests.SingleAsync(c => c.Id == testId);
     var run = new Run
     {
         TestId = test.Id,
-        State = State.Running,
-        RunDateTime = DateTime.UtcNow
+        State = State.Pending
     };
     test.Runs.Add(run);
     await db.SaveChangesAsync();
-
-    var thread = new Thread(async () =>
-    {
-        var splashContext = provider.CreateScope().ServiceProvider.GetRequiredService<SplashContext>();
-        splashContext.Runs.Attach(run);
-
-        var basePath = "../cypress";
-        var psiNpmRunDist = new ProcessStartInfo
-        {
-            FileName = "bash",
-            RedirectStandardInput = true,
-            WorkingDirectory = basePath
-        };
-        using var pNpmRunDist = Process.Start(psiNpmRunDist);
-        pNpmRunDist!.StandardInput.WriteLine("npx cypress run . && exit 0");
-        pNpmRunDist.WaitForExit();
-
-        var videoPath = basePath + "/cypress/videos/test.cy.js.mp4";
-        File.Move(videoPath, videosPath + run.Id + ".mp4");
-        run.State = State.Succeeded;
-        await splashContext.SaveChangesAsync();
-    });
-    thread.Start();
-
-    return run.Id;
+    
+    return run.Project();
 });
 
-app.MapGet("/run/{runId:Guid}/video", async (Guid runId)  =>
+app.MapGet("/run/{runId:Guid}", async (Guid runId, SplashContext db) =>
 {
-    var fileName = videosPath + runId + ".mp4";
+    var run = await db.Runs.SingleAsync(c => c.Id == runId);
+   
+    return run.Project();
+});
+
+app.MapGet("/run/{runId:Guid}/video", async (Guid runId) =>
+{
+    var fileName = CypressWorker.VideosPath + runId + ".mp4";
     var filestream = File.OpenRead(fileName);
 
-    return Results.File(filestream, contentType: "video/mp4", 
-        fileDownloadName: fileName, enableRangeProcessing: true); 
-
+    return Results.File(filestream, contentType: "video/mp4",
+        fileDownloadName: fileName, enableRangeProcessing: true);
 });
 
 app.UseCors();
