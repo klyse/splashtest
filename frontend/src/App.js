@@ -10,7 +10,7 @@ import {
   Code,
   ButtonGroup,
   Spacer,
-  theme,
+  extendTheme,
   Image,
   Button,
   Flex,
@@ -19,6 +19,13 @@ import {
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import logo from '../src/splash_test.png';
 import Home from './Home';
+
+const config = {
+  initialColorMode: 'light',
+  useSystemColorMode: false,
+}
+
+const theme = extendTheme({ config })
 
 function App() {
   return (
