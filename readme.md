@@ -21,6 +21,7 @@ Hackathon Project page: https://hackathon.bz.it/project/splashtest
 
 - [dotnet 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 - [node 18](https://nodejs.org/en/blog/release/v18.0.0/)
+- [k6](https://k6.io)
 
 Optional:
 - [direnv](https://direnv.net)
