@@ -14,10 +14,11 @@ import {
   Tab,
   TabPanel,
   FormControl,
-  Select,
+  Stack,
   FormLabel,
 } from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Empty from './Empty';
 
@@ -67,6 +68,47 @@ function Action({ title, type, placeholder, setItem }) {
   );
 }
 
+function FillAction({ setItem }) {
+  const [val, setVal] = useState('');
+  const [placeholder, setPlaceholder] = useState('');
+  const submit = () => {
+    setItem(items => [
+      ...items,
+      { type: 'fill', value: val, find: placeholder },
+    ]);
+    setVal('');
+    setPlaceholder('');
+  };
+  return (
+    <Flex>
+      <Center w="100px">
+        <Text>Fill</Text>
+      </Center>
+      <Spacer />
+      <Center w="150px">
+        <VStack>
+          <Input
+            value={placeholder}
+            onChange={e => setPlaceholder(e.target.value)}
+            placeholder="Placeholder"
+          />
+          <Input
+            value={val}
+            onChange={e => setVal(e.target.value)}
+            placeholder="Value"
+          />
+        </VStack>
+      </Center>
+      <Spacer />
+      <Center w="100px">
+        <Button onClick={submit} disabled={!val || !placeholder}>
+          +
+        </Button>
+      </Center>
+    </Flex>
+  );
+}
+
 function Step({ item }) {
   return (
     <Box
@@ -80,12 +122,16 @@ function Step({ item }) {
       <Text fontSize="2xl">
         <b>{item.type}</b>
       </Text>
-      <Badge colorScheme="green">{item.value}</Badge>
+      <Stack direction="row">
+        {item.find && <Badge colorScheme="blue">{item.find}</Badge>}
+        <Badge colorScheme="green">{item.value}</Badge>
+      </Stack>
     </Box>
   );
 }
 
 function Create() {
+  const navigate = useNavigate();
   const toast = useToast();
   const [title, setTitle] = useState('');
   const [email, setEmail] = useState('');
@@ -112,12 +158,7 @@ function Create() {
         duration: 9000,
         isClosable: true,
       });
-      setTitle('');
-      setAuthor('');
-      setEmail('');
-      setInterval('');
-      // setSchedule('');
-      setItem([]);
+      navigate('/list');
     } catch (e) {
       toast({
         title: 'Error.',
@@ -134,7 +175,7 @@ function Create() {
         <Tabs>
           <TabList>
             <Tab>Settings</Tab>
-            <Tab>Add new</Tab>
+            <Tab>Compose</Tab>
           </TabList>
 
           <TabPanels>
@@ -188,6 +229,7 @@ function Create() {
                   placeholder="Text"
                   setItem={setItem}
                 />
+                <FillAction setItem={setItem} />
               </VStack>
             </TabPanel>
           </TabPanels>
