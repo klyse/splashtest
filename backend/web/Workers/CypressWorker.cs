@@ -83,7 +83,7 @@ public class CypressWorker : BackgroundService
 
             try
             {
-                var cts = new CancellationTokenSource(TimeSpan.FromSeconds(20));
+                var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
                 var cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, stoppingToken).Token;
 
                 var psiNpmRunDist = new ProcessStartInfo
@@ -93,7 +93,7 @@ public class CypressWorker : BackgroundService
                     WorkingDirectory = basePath
                 };
                 using var pNpmRunDist = Process.Start(psiNpmRunDist);
-                await pNpmRunDist!.StandardInput.WriteLineAsync("npx cypress run || echo hi || exit $?");
+                await pNpmRunDist!.StandardInput.WriteLineAsync("npx cypress run; exit $?");
                 await pNpmRunDist.WaitForExitAsync(cancellationToken);
 
                 run.State = pNpmRunDist.ExitCode != 0 ? State.Failed : State.Succeeded;
