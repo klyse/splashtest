@@ -45,6 +45,7 @@ function Infos(props) {
           Accept: 'application/json',
         },
       });
+      handleClick();
       toast({
         title: 'Test created.',
         description: `New run executed`,
