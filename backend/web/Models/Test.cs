@@ -23,7 +23,7 @@ public class Test
             Name = Name,
             TestCode = TestSteps,
             CreatedDateTime = CreatedDateTime,
-            Runs = Runs.Select(c => c.Project()).ToList()
+            Runs = Runs.OrderByDescending(c => c.RunDateTime).Select(c => c.Project()).ToList()
         };
     }
 }
