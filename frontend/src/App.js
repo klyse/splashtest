@@ -19,6 +19,7 @@ import {
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import logo from '../src/splash_test.png';
 import Home from './Home';
+import { LoadTest } from './LoadTest';
 
 const config = {
   initialColorMode: 'light',
@@ -53,6 +54,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="create" element={<Create />} />
               <Route path="list" element={<List />} />
+              <Route path="load-test" element={<LoadTest />} />
             </Routes>
           </Box>
         </Box>
