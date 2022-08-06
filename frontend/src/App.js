@@ -47,6 +47,9 @@ function App() {
               <Button m={[0, 3]} color="#3e94ff" as={NavLink} to="/list">
                 Check all the tests
               </Button>
+              <Button m={[0, 3]} color="#3e94ff" as={NavLink} to="/load-test">
+                Load test
+              </Button>
             </ButtonGroup>
           </Flex>
           <Box p={5}>

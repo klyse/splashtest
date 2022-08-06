@@ -12,5 +12,5 @@ export const options = {
 };
 
 export default function () {
-  http.get("http://test.k6.io");
+  http.get("https://hackathon.bz.it");
 }
