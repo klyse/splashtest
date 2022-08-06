@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, Textarea } from '@chakra-ui/react';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { useEffect, useRef, useState } from 'react';
 
@@ -25,15 +25,14 @@ export const LoadTest = () => {
     start();
 
     _connection.on('progress', progress => {
-        console.log("progress");
-      setLoadTestResult(prev => [...prev, progress.Message]);
+      setLoadTestResult(prev => [...prev, progress.message]);
     });
 
     setConnection(_connection);
   }, []);
 
   return (
-    <Flex>
+    <Flex minH="100vh">
       <Button
         onClick={() => {
           connection.invoke('Run', 'test');
@@ -41,11 +40,10 @@ export const LoadTest = () => {
       >
         Run
       </Button>
-      <Box>
-        {loadTestResult.map(d => {
-          return <Text>{d}</Text>;
-        })}
-      </Box>
+      <Textarea value={loadTestResult.join("\n")}
+      bg="gray.600"
+      textColor="white"
+      minH="100vh" />
     </Flex>
   );
 };
