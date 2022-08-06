@@ -93,15 +93,22 @@ public class CypressWorker : BackgroundService
                     WorkingDirectory = basePath
                 };
                 using var pNpmRunDist = Process.Start(psiNpmRunDist);
-                await pNpmRunDist!.StandardInput.WriteLineAsync("npx cypress run || exit $?");
+                await pNpmRunDist!.StandardInput.WriteLineAsync("npx cypress run || echo hi || exit $?");
                 await pNpmRunDist.WaitForExitAsync(cancellationToken);
 
                 run.State = pNpmRunDist.ExitCode != 0 ? State.Failed : State.Succeeded;
 
                 await splashContext.SaveChangesAsync(cancellationToken);
             }
-            catch (Exception)
+            catch (TaskCanceledException)
             {
+                _logger.LogWarning("Exceeded max run time for TestId {TestId}", run.Test.Id);
+                run.State = State.Failed;
+                await splashContext.SaveChangesAsync(stoppingToken);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Execution error for TestId {TestId}", run.Test.Id);
                 run.State = State.Failed;
                 await splashContext.SaveChangesAsync(stoppingToken);
             }
@@ -112,6 +119,9 @@ public class CypressWorker : BackgroundService
 
             SafeGuard(() =>
             {
+                if (!Directory.Exists(screenshotsBasePath))
+                    return;
+
                 foreach (var file in Directory.GetFiles(screenshotsBasePath))
                 {
                     File.Move(file, runDirectory + "photo.png");
