@@ -14,61 +14,61 @@ import {
 import { Component } from 'react';
 import List from './List';
 
-const temp = [
-  {
-    id: 123,
-    name: 'adasdasd',
-    runs: [
-      {
-        title: 'adasdasd',
-        date: 'asdadsa',
-        status: 'passed',
-      },
-    ],
-  },
-  {
-    id: 123,
-    name: 'adasdasd',
-    runs: [
-      {
-        title: 'adasdasd',
-        date: 'asdadsa',
-        status: 'failed',
-      },
-    ],
-  },
-  {
-    id: 123,
-    name: 'adasdasd',
-    runs: [
-      {
-        title: 'adasdasd',
-        date: 'asdadsa',
-        status: 'running',
-      },
-      {
-        title: 'adasdasd',
-        date: 'asdadsa',
-        status: 'passed',
-      },
-      {
-        title: 'adasdasd',
-        date: 'asdadsa',
-        status: 'failed',
-      },
-      {
-        title: 'adasdasd',
-        date: 'asdadsa',
-        status: 'failed',
-      },
-      {
-        title: 'adasdasd',
-        date: 'asdadsa',
-        status: 'failed',
-      },
-    ],
-  },
-];
+// const temp = [
+//   {
+//     id: 123,
+//     name: 'adasdasd',
+//     runs: [
+//       {
+//         title: 'adasdasd',
+//         date: 'asdadsa',
+//         status: 'passed',
+//       },
+//     ],
+//   },
+//   {
+//     id: 123,
+//     name: 'adasdasd',
+//     runs: [
+//       {
+//         title: 'adasdasd',
+//         date: 'asdadsa',
+//         status: 'failed',
+//       },
+//     ],
+//   },
+//   {
+//     id: 123,
+//     name: 'adasdasd',
+//     runs: [
+//       {
+//         title: 'adasdasd',
+//         date: 'asdadsa',
+//         status: 'running',
+//       },
+//       {
+//         title: 'adasdasd',
+//         date: 'asdadsa',
+//         status: 'passed',
+//       },
+//       {
+//         title: 'adasdasd',
+//         date: 'asdadsa',
+//         status: 'failed',
+//       },
+//       {
+//         title: 'adasdasd',
+//         date: 'asdadsa',
+//         status: 'failed',
+//       },
+//       {
+//         title: 'adasdasd',
+//         date: 'asdadsa',
+//         status: 'failed',
+//       },
+//     ],
+//   },
+// ];
 
 class AllItems extends Component {
   constructor(props) {
@@ -95,12 +95,11 @@ class AllItems extends Component {
       .catch(error => console.log(error));
   }
   render() {
-    // console.log(temp);
     return (
       <Flex spacing={8} direction="row" gap="8">
         <Box p={5} bg="#fafafa" flexGrow="1" shadow="md" borderWidth="1px">
           {/* {this.state.items.length > 1 ? ( */}
-          <List items={temp} />
+          <List items={this.state.items} />
           {/* ) : (
             'Add new test'
           )} */}
