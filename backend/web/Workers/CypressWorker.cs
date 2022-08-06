@@ -104,13 +104,11 @@ public class CypressWorker : BackgroundService
             {
                 _logger.LogWarning("Exceeded max run time for TestId {TestId}", run.Test.Id);
                 run.State = State.Failed;
-                await splashContext.SaveChangesAsync(stoppingToken);
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Execution error for TestId {TestId}", run.Test.Id);
                 run.State = State.Failed;
-                await splashContext.SaveChangesAsync(stoppingToken);
             }
 
             var runDirectory = MediaPath + run.Id + "/";
@@ -129,6 +127,7 @@ public class CypressWorker : BackgroundService
                 }
             });
 
+            await splashContext.SaveChangesAsync(stoppingToken);
             await Task.Delay(1000, stoppingToken);
         }
     }
