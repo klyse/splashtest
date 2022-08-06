@@ -1,4 +1,4 @@
-![load test](images/logo.jpg)
+![load test](images/logo.png)
 
 
 # Splash Test
