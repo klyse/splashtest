@@ -10,7 +10,10 @@ public class FileGenerator
         var fileContent = new StringBuilder();
         fileContent.Append(@"
 describe('empty spec', () => {
-  it('passes', () => {
+    it('passes', () => {
+      Cypress.on('uncaught:exception', (err, runnable) => {
+        return false
+      })
 ");
 
         foreach (var testStep in testSteps)
