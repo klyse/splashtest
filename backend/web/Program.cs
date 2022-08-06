@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using web;
 using web.Db;
 using web.Models;
 using web.Workers;
@@ -22,7 +23,8 @@ builder.Services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen()
     .AddDbContext<SplashContext>(config => { config.UseNpgsql(connectionString); })
-    .AddHostedService<CypressWorker>();
+    .AddHostedService<CypressWorker>()
+    .AddSignalR();
 
 var app = builder.Build();
 
@@ -80,6 +82,7 @@ app.UseCors();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+app.MapHub<LoadTestHub>("/load-test");
 
 using (var serviceScope = app.Services.CreateScope())
 {
