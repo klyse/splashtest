@@ -31,7 +31,7 @@ Start postgres with docker compose:
 
 Navigate to the `backend/web` folder and run `dotnet run` to start the asp.net core API.
 
-Navigate to `http://localhost:5001/swagger/index.html` to see the swagger specs.
+Navigate to [http://localhost:5001/swagger/index.html](http://localhost:5001/swagger/index.html) to see the swagger specs.
 
 ### Init Cypress
 
@@ -41,4 +41,4 @@ Navigate to the `backend/cypress` folder and execute `npm install`.
 
 Navigate to the `frontend` folder and run `npm install` and `npm start`
 
-Navigate to `http://localhost:3000` to access the frontend.
+Navigate to [http://localhost:3000](http://localhost:3000) to access the frontend.
