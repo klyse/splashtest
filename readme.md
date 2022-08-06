@@ -1,3 +1,6 @@
+![load test](images/logo.jpg)
+
+
 # Splash Test
 
 Hackathon Project page: https://hackathon.bz.it/project/splashtest
@@ -18,6 +21,7 @@ Hackathon Project page: https://hackathon.bz.it/project/splashtest
 
 - [dotnet 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 - [node 18](https://nodejs.org/en/blog/release/v18.0.0/)
+- [k6](https://k6.io)
 
 Optional:
 - [direnv](https://direnv.net)
@@ -42,3 +46,22 @@ Navigate to the `backend/cypress` folder and execute `npm install`.
 Navigate to the `frontend` folder and run `npm install` and `npm start`
 
 Navigate to [http://localhost:3000](http://localhost:3000) to access the frontend.
+
+# Screenshots
+
+![homepage](images/homepage.png)
+
+
+![end to end](images/e2e.gif)
+
+Easy creation of new UI tests. We use `cypress` as test framework and are therefore extremely flexible. New functionallity can be added very quickly:
+
+![create-test](images/create-test.png)
+
+See all your run tests and watch a small video with the result:
+
+![list of test runs](images/list-of-test-run.png)
+
+We have integrated loadtesting with `k6`:
+
+![load test](images/load-test.gif)

@@ -6,7 +6,7 @@ namespace web;
 public class LoadTestHub : Hub
 {
     private readonly IServiceProvider _serviceProvider;
-
+    private static bool isRunning = false;
     public LoadTestHub(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
@@ -21,6 +21,9 @@ public class LoadTestHub : Hub
 
     public async Task Run(string host)
     {
+        if (isRunning)
+            return;
+        isRunning = true;
         var psiNpmRunDist = new ProcessStartInfo
         {
             FileName = "bash",
@@ -37,10 +40,11 @@ public class LoadTestHub : Hub
             {
                 new Progress
                 {
-                    Message = args.Data
+                    Message = args.Data!
                 }
             });
         };
         await pNpmRunDist.WaitForExitAsync();
+        isRunning = false;
     }
 }
