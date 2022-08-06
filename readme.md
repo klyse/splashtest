@@ -42,3 +42,22 @@ Navigate to the `backend/cypress` folder and execute `npm install`.
 Navigate to the `frontend` folder and run `npm install` and `npm start`
 
 Navigate to [http://localhost:3000](http://localhost:3000) to access the frontend.
+
+# Screenshots
+
+![homepage](images/homepage.png)
+
+
+![end to end](images/e2e.gif)
+
+Easy creation of new UI tests. We use `cypress` as test framework and are therefore extremely flexible. New functionallity can be added very quickly:
+
+![create-test](images/create-test.png)
+
+See all your run tests and watch a small video with the result:
+
+![list of test runs](images/list-of-test-run.png)
+
+We have integrated loadtesting with `k6`:
+
+![load test](images/load-test.gif)
