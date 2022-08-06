@@ -71,7 +71,7 @@ function MoreInfo(props) {
           <DrawerBody>
             <Accordion>
               {props.item.runs.map(run => (
-                <AccordionItem>
+                <AccordionItem key={run.id}>
                   <AccordionButton>
                     <Box flex="1" textAlign="left">
                       <Badge
@@ -154,7 +154,7 @@ function MyList(props) {
         </Thead>
         <Tbody>
           {props?.items?.map(item => (
-            <Tr>
+            <Tr key={item.id}>
               <Td>{item.name}</Td>
               <Td>
                 <Button

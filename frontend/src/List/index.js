@@ -79,8 +79,23 @@ class AllItems extends Component {
   }
 
   componentDidMount() {
-    // console.log('prova');
-    fetch('http://localhost:5001/tests', {
+    this.poll();
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.i);
+  }
+
+  poll() {
+    this.load().then(() => {
+      this.i = setTimeout(() => {
+        this.poll();
+      }, 10000);
+    });
+  }
+
+  load() {
+    return fetch('http://localhost:5001/tests', {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -94,6 +109,7 @@ class AllItems extends Component {
       })
       .catch(error => console.log(error));
   }
+
   render() {
     return (
       <Flex spacing={8} direction="row" gap="8">
