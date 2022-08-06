@@ -1,0 +1,29 @@
+{
+	"testCode": [
+		{
+			"type": "Visit",
+			"value": "https://www.ebay.it/",
+			"find": null
+		},
+		{
+			"type": "Fill",
+			"value": "tenda",
+			"find": "Cerca qualsiasi cosa"
+		},
+		{
+			"type": "Click",
+			"value": "Cerca",
+			"find": null
+		},
+		{
+			"type": "Contains",
+			"value": "Materiale",
+			"find": null
+		},
+		{
+			"type": "Contains",
+			"value": "Colore",
+			"find": null
+		}
+	]
+}
