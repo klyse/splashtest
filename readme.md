@@ -1,3 +1,6 @@
+![load test](images/logo.jpg)
+
+
 # Splash Test
 
 Hackathon Project page: https://hackathon.bz.it/project/splashtest
