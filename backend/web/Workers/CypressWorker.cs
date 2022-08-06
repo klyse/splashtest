@@ -93,7 +93,7 @@ public class CypressWorker : BackgroundService
                     WorkingDirectory = basePath
                 };
                 using var pNpmRunDist = Process.Start(psiNpmRunDist);
-                await pNpmRunDist!.StandardInput.WriteLineAsync("npx cypress run; exit $?");
+                await pNpmRunDist!.StandardInput.WriteLineAsync("npx cypress run . --headless; exit $?");
                 await pNpmRunDist.WaitForExitAsync(cancellationToken);
 
                 run.State = pNpmRunDist.ExitCode != 0 ? State.Failed : State.Succeeded;
