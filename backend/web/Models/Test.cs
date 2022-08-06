@@ -10,6 +10,7 @@ public class Test
 
     public Guid Id { get; set; }
     public string Name { get; set; } = null!;
+    public DateTime CreatedDateTime { get; set; }
     public ICollection<TestStep>? TestSteps { get; set; }
 
     public ICollection<Run> Runs { get; }
@@ -21,6 +22,7 @@ public class Test
             Id = Id,
             Name = Name,
             TestCode = TestSteps,
+            CreatedDateTime = CreatedDateTime,
             Runs = Runs.Select(c => c.Project()).ToList()
         };
     }

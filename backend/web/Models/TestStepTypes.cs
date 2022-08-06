@@ -4,5 +4,6 @@ public enum TestStepTypes
 {
     Visit,
     Contains,
-    Click
+    Click,
+    Fill
 }

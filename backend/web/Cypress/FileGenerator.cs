@@ -31,6 +31,11 @@ describe('empty spec', () => {
     cy.contains('{testStep.Value}')
 ");
                     break;
+                case TestStepTypes.Fill:
+                    fileContent.Append(@$"
+    cy.get('input[placeholder*=""{testStep.Find}""]').type('{testStep.Value}')
+");
+                    break;
             }
 
         fileContent.Append(@"

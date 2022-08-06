@@ -26,7 +26,11 @@ builder.Services
 
 var app = builder.Build();
 
-app.MapGet("/tests", async (SplashContext db) => (await db.Tests.Include(c => c.Runs).ToListAsync()).Select(c => c.Project()));
+app.MapGet("/tests", async (SplashContext db) => 
+    (await db.Tests.Include(c => c.Runs)
+        .OrderByDescending(c => c.CreatedDateTime)
+    .ToListAsync())
+    .Select(c => c.Project()));
 
 app.MapPost("/tests", async (TestDao n, SplashContext db) =>
 {

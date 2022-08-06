@@ -37,6 +37,18 @@ public class CypressWorker : BackgroundService
         Directory.CreateDirectory(path);
     }
 
+    private void SafeGuard(Action action)
+    {
+        try
+        {
+            action();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "error");
+        }
+    }
+
     private async Task CycleAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
@@ -71,7 +83,7 @@ public class CypressWorker : BackgroundService
 
             try
             {
-                var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+                var cts = new CancellationTokenSource(TimeSpan.FromSeconds(20));
                 var cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, stoppingToken).Token;
 
                 var psiNpmRunDist = new ProcessStartInfo
@@ -81,8 +93,8 @@ public class CypressWorker : BackgroundService
                     WorkingDirectory = basePath
                 };
                 using var pNpmRunDist = Process.Start(psiNpmRunDist);
-                await pNpmRunDist!.StandardInput.WriteLineAsync("npx cypress run . || exit $?");
-                await pNpmRunDist.WaitForExitAsync(stoppingToken);
+                await pNpmRunDist!.StandardInput.WriteLineAsync("npx cypress run || exit $?");
+                await pNpmRunDist.WaitForExitAsync(cancellationToken);
 
                 run.State = pNpmRunDist.ExitCode != 0 ? State.Failed : State.Succeeded;
 
@@ -96,13 +108,16 @@ public class CypressWorker : BackgroundService
 
             var runDirectory = MediaPath + run.Id + "/";
             ClearDir(runDirectory);
-            File.Move(videoPath, runDirectory + "video.mp4");
+            SafeGuard(() => { File.Move(videoPath, runDirectory + "video.mp4"); });
 
-            foreach (var file in Directory.GetFiles(screenshotsBasePath))
+            SafeGuard(() =>
             {
-                File.Move(file, runDirectory + "photo.png");
-                break;
-            }
+                foreach (var file in Directory.GetFiles(screenshotsBasePath))
+                {
+                    File.Move(file, runDirectory + "photo.png");
+                    break;
+                }
+            });
 
             await Task.Delay(1000, stoppingToken);
         }
